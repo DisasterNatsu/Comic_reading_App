@@ -181,4 +181,6 @@ const ComicChapters = async ({ params }: { params: { comicName: string } }) => {
   );
 };
 
+export const revalidate = 50000;
+
 export default ComicChapters;

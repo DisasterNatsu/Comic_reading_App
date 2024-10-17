@@ -104,7 +104,7 @@ const Privacy = () => {
             Third-party ad servers or ad networks uses technologies like
             cookies, JavaScript, or Web Beacons that are used in their
             respective advertisements and links that appear on Disaster Scans,
-            which are sent directly to users' browser. They automatically
+            which are sent directly to users&apos; browser. They automatically
             receive your IP address when this occurs. These technologies are
             used to measure the effectiveness of their advertising campaigns
             and/or to personalize the advertising content that you see on
@@ -119,17 +119,17 @@ const Privacy = () => {
         <section className="space-y-3">
           <h2 className="heading">Third Party Privacy Policies</h2>
           <p className="paragraph">
-            Disaster Scans's Privacy Policy does not apply to other advertisers
-            or websites. Thus, we are advising you to consult the respective
-            Privacy Policies of these third-party ad servers for more detailed
-            information. It may include their practices and instructions about
-            how to opt-out of certain options.
+            Disaster Scans&apos;s Privacy Policy does not apply to other
+            advertisers or websites. Thus, we are advising you to consult the
+            respective Privacy Policies of these third-party ad servers for more
+            detailed information. It may include their practices and
+            instructions about how to opt-out of certain options.
           </p>
 
           <p className="paragraph">
             You can choose to disable cookies through your individual browser
             options. To know more detailed information about cookie management
-            with specific web browsers, it can be found at the browsers'
+            with specific web browsers, it can be found at the browsers&apos;
             respective websites.
           </p>
         </section>
@@ -160,7 +160,7 @@ const Privacy = () => {
             Third-party ad servers or ad networks uses technologies like
             cookies, JavaScript, or Web Beacons that are used in their
             respective advertisements and links that appear on Disaster Scans,
-            which are sent directly to users' browser. They automatically
+            which are sent directly to users&apos; browser. They automatically
             receive your IP address when this occurs. These technologies are
             used to measure the effectiveness of their advertising campaigns
             and/or to personalize the advertising content that you see on
@@ -175,16 +175,16 @@ const Privacy = () => {
         <section className="space-y-3">
           <h2 className="heading">Third Party Privacy Policies</h2>
           <p className="paragraph">
-            Disaster Scans's Privacy Policy does not apply to other advertisers
-            or websites. Thus, we are advising you to consult the respective
-            Privacy Policies of these third-party ad servers for more detailed
-            information. It may include their practices and instructions about
-            how to opt-out of certain options.
+            Disaster Scans&apos;s Privacy Policy does not apply to other
+            advertisers or websites. Thus, we are advising you to consult the
+            respective Privacy Policies of these third-party ad servers for more
+            detailed information. It may include their practices and
+            instructions about how to opt-out of certain options.
           </p>
           <p className="paragraph">
             You can choose to disable cookies through your individual browser
             options. To know more detailed information about cookie management
-            with specific web browsers, it can be found at the browsers'
+            with specific web browsers, it can be found at the browsers&apos;
             respective websites.
           </p>
         </section>
@@ -199,17 +199,17 @@ const Privacy = () => {
           </p>
           <ul className="list-disc pl-7 paragraph space-y-2 text-left">
             <li>
-              Request that a business that collects a consumer's personal data
-              disclose the categories and specific pieces of personal data that
-              a business has collected about consumers.
+              Request that a business that collects a consumer&apos;s personal
+              data disclose the categories and specific pieces of personal data
+              that a business has collected about consumers.
             </li>
             <li>
               Request that a business delete any personal data about the
               consumer that a business has collected.
             </li>
             <li>
-              Request that a business that sells a consumer's personal data, not
-              sell the consumer's personal data.
+              Request that a business that sells a consumer&apos;s personal
+              data, not sell the consumer&apos;s personal data.
             </li>
             <li>
               If you make a request, we have one month to respond to you. If you

@@ -12,9 +12,9 @@ const About = () => {
           <p className="md:text-left text-center">
             The Disaster Scans started first as an Youtube channel, with the
             first ever series Natsu, the former group leader picked up is
-            Apotheosis and with support of our readers and with Natsu's love for
-            manhua we picked up more serieses. However, finally The Disaster
-            Scans moved away from YouTube.
+            Apotheosis and with support of our readers and with Natsu&apos;s
+            love for manhua we picked up more serieses. However, finally The
+            Disaster Scans moved away from YouTube.
           </p>
         </section>
         <section className="mt-5">
@@ -30,8 +30,8 @@ const About = () => {
             readers.
           </p>
           <p className="mt-3 md:text-left text-center">
-            Thank you for supporting us... we couldn't have been able to do it
-            without the support from all our readers.
+            Thank you for supporting us... we couldn&apos;t have been able to do
+            it without the support from all our readers.
           </p>
         </section>
       </div>

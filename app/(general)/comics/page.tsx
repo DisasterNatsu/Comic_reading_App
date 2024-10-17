@@ -85,4 +85,6 @@ const Comics = async () => {
   );
 };
 
+export const revalidate = 7200;
+
 export default Comics;
