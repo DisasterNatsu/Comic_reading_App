@@ -6,6 +6,8 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Toaster, toast } from "sonner";
+import { FaCheckCircle } from "react-icons/fa";
 
 import {
   Form,
@@ -18,6 +20,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -29,38 +33,86 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Axios } from "@/utils/AxiosConfig";
 
-const formSchema = z.object({
-  userName: z.string().min(2, {
-    message: "❗ Username must be at least 2 characters.",
-  }),
-  email: z.string().min(2, {
-    message: "❗ Username must be at least 2 characters.",
-  }),
-  password: z.string().min(6, {
-    message: "❗ Password must be at least 6 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    userName: z.string().min(2, {
+      message: "❗ Username must be at least 2 characters.",
+    }),
+    email: z.string().min(2, {
+      message: "❗ Username must be at least 2 characters.",
+    }),
+    password: z.string().min(6, {
+      message: "❗ Password must be at least 6 characters.",
+    }),
+    confirmPassword: z.string().min(6, {
+      message: "❗ Password must be at least 6 characters.",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "❗ Passwords must match.",
+    path: ["confirmPassword"], // Specify the path where the error should appear
+  });
 
 const Register = () => {
+  const { resolvedTheme } = useTheme();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      userName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const loadingToastId = toast.warning("Loading...", {
+      icon: <div className="spinner" />, // Custom spinner or loading indicator
+      duration: Infinity, // Keep it visible until dismissed
+    });
+
+    try {
+      const req = await Axios.post("/user/register", data);
+      const res = await req.data;
+
+      if (req.status === 201) {
+        toast.dismiss(loadingToastId); // Dismiss the loading toast
+
+        toast.success("Account Created!", {
+          icon: <FaCheckCircle size={15} />, // Custom spinner or loading indicator
+        });
+
+        // Redirect to /log-in after 2 seconds
+        setTimeout(() => {
+          router.replace("/log-in");
+        }, 2000);
+
+        return;
+      }
+    } catch (error: any) {
+      console.log(error);
+
+      toast.dismiss(loadingToastId); // Dismiss the loading toast
+
+      return toast.error(error.response.data.message);
+    }
   };
 
   return (
     <>
       <title>Sign Up - Disaster Scans</title>
       <div className="w-full h-screen">
+        <Toaster
+          closeButton
+          richColors
+          expand={false}
+          theme={resolvedTheme === "dark" ? "dark" : "light"} // Dynamically set theme based on the current Tailwind theme
+          visibleToasts={1}
+        />
         <div className="flex h-full w-full items-center justify-center flex-col px-6 py-12 shadow-md lg:px-12 shrink-0 lg:min-w-[540px]">
           <div className="flex flex-col items-center justify-center">
             <Image
@@ -87,7 +139,7 @@ const Register = () => {
               >
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="userName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Username</FormLabel>
@@ -119,6 +171,20 @@ const Register = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>

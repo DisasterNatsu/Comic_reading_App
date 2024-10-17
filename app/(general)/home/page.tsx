@@ -13,22 +13,22 @@ import {
 } from "react-icons/fa6";
 
 import RecommendationCard from "@/components/home/RecommendationCard";
-import Genres from "@/components/home/Genres";
 import { Axios } from "@/utils/AxiosConfig";
-import { Key } from "react";
 
 const getData = async () => {
   const popularReq = await Axios.get("/get-comics/top-eight");
   const latestEight = await Axios.get("/get-comics/comic-with-chapter");
+  const five = await Axios.get("/get-comics/get-random-five");
 
-  const popular = await popularReq.data;
+  const popular = (await popularReq.data) as PopularResults[];
   const eightWithChapter = await latestEight.data;
+  const fiveRandom = (await five.data) as RandomFive[];
 
-  return { popular, eightWithChapter };
+  return { popular, eightWithChapter, fiveRandom };
 };
 
 const Home = async () => {
-  const { popular, eightWithChapter } = await getData();
+  const { popular, eightWithChapter, fiveRandom } = await getData();
 
   return (
     <>
@@ -266,11 +266,9 @@ const Home = async () => {
                 {/* Recommendation Cards */}
 
                 <div className="flex flex-col gap-4">
-                  <RecommendationCard />
-                  <RecommendationCard />
-                  <RecommendationCard />
-                  <RecommendationCard />
-                  <RecommendationCard />
+                  {fiveRandom.map((item: RandomFive) => (
+                    <RecommendationCard item={item} key={item.id} />
+                  ))}
                 </div>
               </div>
             </div>

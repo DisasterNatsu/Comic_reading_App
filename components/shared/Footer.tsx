@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="h-40 max-w-[1440px] mx-auto px-3 border-t dark:border-white my-6">
+    <footer className="h-40 container mx-auto px-3 border-t dark:border-white my-6">
       <div className="flex sm:flex-row flex-col justify-evenly gap-10 lg:gap-0 mt-5">
         {/* left */}
         <div className="flex flex-col items-center sm:items-start space-y-4">
@@ -26,7 +26,7 @@ const Footer = () => {
             Tips
           </Link>
           <Link
-            href={"#"}
+            href={"/contact-us"}
             className="dark:hover:text-accentColor hover:text-accentColorLight"
           >
             Contact Us
@@ -68,6 +68,12 @@ const Footer = () => {
             className="dark:hover:text-accentColor hover:text-accentColorLight"
           >
             Report bugs
+          </Link>
+          <Link
+            href={"#"}
+            className="dark:hover:text-accentColor hover:text-accentColorLight"
+          >
+            Join Our Ranks
           </Link>
         </div>
       </div>

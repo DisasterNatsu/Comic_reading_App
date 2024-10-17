@@ -1,9 +1,10 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 import NavButtons from "@/components/chapterReading/NavButtons";
 import { Axios } from "@/utils/AxiosConfig";
-import Image from "next/image";
+import DisqusComments from "@/components/shared/DisqusComments";
 
 const getData = async (comicName: string, chapterImages: string) => {
   try {
@@ -39,6 +40,11 @@ const ChapterImages = async ({
   const { pages, allChapters } = response;
 
   const images = JSON.parse(pages.pages);
+
+  const stringId = params.chapterImages.split("-");
+  const intId = stringId[0];
+  const name = stringId.slice(1, stringId.length - 1).join(" ");
+  const configUrl = `http://localhost:3000/${params.comicName}/${params.chapterImages}`;
 
   return (
     <>
@@ -76,8 +82,26 @@ const ChapterImages = async ({
           comicPartName={params.comicName}
         />
 
-        <section className="container flex items-center justify-center my-3">
-          Comment Section
+        <div className="container mt-5 overflow-hidden flex flex-row gap-2 items-center justify-center">
+          {/* Heading with divider */}
+
+          <div
+            role="none"
+            aria-orientation="horizontal"
+            className="shrink-0 bg-border h-[1px] w-full"
+          />
+          <span className="text-[8px] lg:text-[12px] text-neutral-400">
+            COMMENTS
+          </span>
+          <div
+            role="none"
+            aria-orientation="horizontal"
+            className="shrink-0 bg-border h-[1px] w-full"
+          />
+        </div>
+
+        <section className="container mb-4">
+          <DisqusComments id={intId} title={name} query={configUrl} />
         </section>
       </div>
     </>

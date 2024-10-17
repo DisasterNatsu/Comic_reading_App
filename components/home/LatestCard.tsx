@@ -17,12 +17,6 @@ const LatestCard = ({ item }: { item: LatestData }) => {
     item.chapters[0].chapterID +
     "-chapter-" +
     item.chapters[0].ChapterNumber;
-  const chapterLink2 =
-    comicLink +
-    "/" +
-    item.chapters[1].chapterID +
-    "-chapter-" +
-    item.chapters[1].ChapterNumber;
 
   return (
     <div>
@@ -41,7 +35,7 @@ const LatestCard = ({ item }: { item: LatestData }) => {
 
           <Link
             href={comicLink}
-            className="px-3 text-center text-sm absolute top-8 dark:hover:text-yellow-500 hover:text-orange-500"
+            className="px-3 text-center text-sm absolute top-8 dark:hover:text-yellow-500 hover:text-orange-500 line-clamp-1"
           >
             {item.ComicTitle}
           </Link>
@@ -51,12 +45,20 @@ const LatestCard = ({ item }: { item: LatestData }) => {
           >
             Chapter {item.chapters[0].ChapterNumber}
           </Link>
-          <Link
-            href={chapterLink2}
-            className="px-3 md:text-[0.55em] lg:text-sm lg:px-5 py-1 border rounded-full dark:border-slate-400 border-slate-900 font-semibold dark:hover:bg-slate-600 hover:bg-slate-400 cursor-pointer w-full text-center"
-          >
-            Chapter {item.chapters[1].ChapterNumber}
-          </Link>
+          {item.chapters[1] && (
+            <Link
+              href={
+                comicLink +
+                "/" +
+                item.chapters[1].chapterID +
+                "-chapter-" +
+                item.chapters[1].ChapterNumber
+              }
+              className="px-3 md:text-[0.55em] lg:text-sm lg:px-5 py-1 border rounded-full dark:border-slate-400 border-slate-900 font-semibold dark:hover:bg-slate-600 hover:bg-slate-400 cursor-pointer w-full text-center"
+            >
+              Chapter {item.chapters[1].ChapterNumber}
+            </Link>
+          )}
         </div>
       </div>
     </div>

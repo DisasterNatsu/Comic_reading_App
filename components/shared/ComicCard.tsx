@@ -31,7 +31,7 @@ const ComicCard = ({
       </AspectRatio>
 
       <div className="flex flex-col items-center my-2">
-        <h5 className="text-foreground font-semibold text-xxs lg:text-sm m-0 p-0 line-clamp-2 text-center">
+        <h5 className="text-foreground font-semibold text-xxs lg:text-sm m-0 p-0 line-clamp-1 text-center">
           {ComicTitle}
         </h5>
       </div>

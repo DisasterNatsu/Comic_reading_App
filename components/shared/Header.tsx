@@ -1,25 +1,85 @@
 "use client";
 
-import React, { useState } from "react";
-import { ModeToggle } from "./ThemeToggle";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { NavData } from "@/constants/NavData";
-import { buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
 import { Menu, Search, User } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { ModeToggle } from "./ThemeToggle";
+import { buttonVariants } from "../ui/button";
+import { NavData } from "@/constants/NavData";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 import MobileHeader from "./MobileHeader";
+import { Axios } from "@/utils/AxiosConfig";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [name, setName] = useState<string>("");
+
+  // get pathname
+
+  const path = usePathname();
+
+  const Authenticated = async () => {
+    // get auth token from cookies
+
+    const authToken = Cookies.get("ds-user-token");
+
+    if (!authToken) {
+      setLoading(false);
+      return setIsAuth(false);
+    } // if no auth token
+
+    try {
+      const response = await Axios.get("/user/token", {
+        headers: {
+          "disaster-scans-token": authToken,
+        },
+      });
+
+      const data: UserAuthResponse = await response.data;
+
+      if (response.status === 200) {
+        setLoading(false);
+        setName(data.userName.split("").splice(0, 2).join("").toUpperCase());
+
+        return setIsAuth(data.verified);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Logout = () => {
+    Cookies.remove("ds-user-token");
+
+    setName("");
+    return setIsAuth(false);
+  };
+
+  useEffect(() => {
+    Authenticated();
+  }, [path]);
 
   return (
     <>
@@ -63,47 +123,117 @@ const Header = () => {
                 className="w-full bg-transparent outline-none px-2"
                 placeholder="Search..."
               />
-              <Search size={18} />
+              <Search size={18} className="cursor-pointer" />
             </div>
             {/* Auth Buttons with mode toggle */}
             <div className="flex items-center space-x-2">
               {/* Only show in tablet */}
 
               <div className="lg:hidden">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center">
-                    <User />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Link href={"/log-in"}>Log In</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href={"/register"}>Register</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {loading ? (
+                  <Skeleton className="w-[40px] h-[38px] lg:hidden rounded-full ml-2" />
+                ) : isAuth ? (
+                  <Menubar className="border-0 lg:hidden -mr-4">
+                    <MenubarMenu>
+                      <MenubarTrigger className="data-[state=open]:bg-background focus:bg-background cursor-pointer">
+                        <Avatar>
+                          <AvatarFallback>{name}</AvatarFallback>
+                        </Avatar>
+                      </MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarItem className="cursor-pointer">
+                          Account Settings
+                        </MenubarItem>
+                        <MenubarItem className="cursor-pointer">
+                          Donate
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem className="cursor-pointer">
+                          Request a new series
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem
+                          className="cursor-pointer text-red-500 font-medium"
+                          onClick={Logout}
+                        >
+                          Log Out
+                        </MenubarItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+                  </Menubar>
+                ) : (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center">
+                      <User />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <Link href={"/log-in"}>Log In</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link href={"/register"}>Register</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
               </div>
 
-              <Link
-                href={"/log-in"}
-                className={cn(
-                  buttonVariants({ className: "font-semibold hidden lg:flex" })
-                )}
-              >
-                Log In
-              </Link>
-              <Link
-                href={"/register"}
-                className={cn(
-                  buttonVariants({
-                    variant: "secondary",
-                    className: "font-semibold hidden lg:flex",
-                  })
-                )}
-              >
-                Register
-              </Link>
+              {loading ? (
+                <Skeleton className="w-[150px] h-[40px] rounded-md hidden lg:flex" />
+              ) : isAuth ? (
+                <Menubar className="border-0 hidden lg:flex">
+                  <MenubarMenu>
+                    <MenubarTrigger className="data-[state=open]:bg-background focus:bg-background cursor-pointer">
+                      <Avatar>
+                        <AvatarFallback>{name}</AvatarFallback>
+                      </Avatar>
+                    </MenubarTrigger>
+                    <MenubarContent>
+                      <MenubarItem className="cursor-pointer">
+                        Account Settings
+                      </MenubarItem>
+                      <MenubarItem className="cursor-pointer">
+                        Donate
+                      </MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem className="cursor-pointer">
+                        Request a new series
+                      </MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem
+                        className="cursor-pointer text-red-500 font-medium"
+                        onClick={Logout}
+                      >
+                        Log Out
+                      </MenubarItem>
+                    </MenubarContent>
+                  </MenubarMenu>
+                </Menubar>
+              ) : (
+                <>
+                  <Link
+                    href={"/log-in"}
+                    className={cn(
+                      buttonVariants({
+                        className: "font-semibold hidden lg:flex",
+                      })
+                    )}
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    href={"/register"}
+                    className={cn(
+                      buttonVariants({
+                        variant: "secondary",
+                        className: "font-semibold hidden lg:flex",
+                      })
+                    )}
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
               <ModeToggle />
             </div>
           </div>

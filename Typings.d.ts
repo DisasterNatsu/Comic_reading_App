@@ -74,3 +74,30 @@ interface DisqusProps {
   query: string;
   title: string;
 }
+
+interface RandomFive {
+  id: string;
+  name: string;
+  CoverImage: string;
+  Genres: string;
+}
+
+interface UserAuthResponse {
+  verified: boolean;
+  email: string;
+  userName: string;
+}
+
+interface AllComicResType {
+  id: string;
+  ComicTitle: string;
+  Description: string;
+  CoverImage: string;
+  Origin: string;
+  Status: string;
+  Genres: string;
+  Author: string;
+  Artist: string;
+  Badges: string;
+  Date: string;
+}

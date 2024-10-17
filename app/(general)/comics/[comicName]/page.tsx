@@ -29,6 +29,8 @@ const ComicChapters = async ({ params }: { params: { comicName: string } }) => {
   const genres = JSON.parse(allChapters.comicDetails.Genres);
   const nameTitle = formatComicName(params.comicName);
 
+  console.log(allChapters.comicDetails.ComicTitle);
+
   // Id Data for Disqus
 
   const stringId = params.comicName.split("-");
@@ -38,7 +40,7 @@ const ComicChapters = async ({ params }: { params: { comicName: string } }) => {
 
   return (
     <>
-      <title>{`${nameTitle} - Disaster Scans`}</title>
+      <title>{`${allChapters.comicDetails.ComicTitle} - Disaster Scans`}</title>
       <div className="relative">
         {/* Background Image  */}
         <div className="w-full h-full absolute overflow-hidden z-10">
@@ -66,7 +68,7 @@ const ComicChapters = async ({ params }: { params: { comicName: string } }) => {
                 {/* Comic Title */}
                 <div className="flex flex-row gap-3 items-center flex-wrap">
                   <h1 className="text-xl md:text-3xl text-foreground font-bold text-center lg:text-left inline">
-                    Martial Peak
+                    {allChapters.comicDetails.ComicTitle}
                   </h1>
                 </div>
 

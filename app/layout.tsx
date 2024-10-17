@@ -24,8 +24,9 @@ export default function RootLayout({
           name="robots"
           content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:standard"
         />
+        <link rel="icon" href="/icon.ico" sizes="32x32" />
       </head>
-      <body className={roboto.className}>
+      <body className={`${roboto.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

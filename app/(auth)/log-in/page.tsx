@@ -11,6 +11,7 @@ import { Toaster, toast } from "sonner";
 import { useTheme } from "next-themes";
 import Cookies from "js-cookie";
 import { FaCheckCircle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -48,6 +49,7 @@ const formSchema2 = z.object({
 
 const LogIn = () => {
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,6 +65,8 @@ const LogIn = () => {
       email: "",
     },
   });
+
+  // Login function
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // Display a loading toast
@@ -83,6 +87,13 @@ const LogIn = () => {
         toast.success("Success! Welcome back!", {
           icon: <FaCheckCircle size={15} />, // Custom spinner or loading indicator
         });
+
+        // Redirect to /log-in after 2 seconds
+        setTimeout(() => {
+          router.replace("/home");
+        }, 2000);
+
+        return;
       }
     } catch (error: any) {
       console.log(error);
@@ -92,6 +103,8 @@ const LogIn = () => {
       return toast.error(error.response.data.message);
     }
   };
+
+  // Forget Password
 
   const onPasswordForget = async (data: z.infer<typeof formSchema2>) => {
     // Display a loading toast

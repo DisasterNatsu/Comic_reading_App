@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Toaster, toast } from "sonner";
-import { useTheme } from "next-themes";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,7 @@ const formSchema = z.object({
 const RecoverPage = ({ params }: { params: { token: string } }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const router = useRouter();
   const { resolvedTheme } = useTheme();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,7 +65,16 @@ const RecoverPage = ({ params }: { params: { token: string } }) => {
 
       const res = await req.data;
 
-      return toast.success(res.message);
+      toast.dismiss(loadingToastId);
+
+      toast.success(res.message);
+
+      // Redirect to /log-in after 2 seconds
+      setTimeout(() => {
+        router.replace("/log-in");
+      }, 2000);
+
+      return;
     } catch (error: any) {
       console.log(error);
 
@@ -72,8 +82,6 @@ const RecoverPage = ({ params }: { params: { token: string } }) => {
 
       return toast.error(error.response.data.message);
     }
-
-    console.log(data);
   };
 
   return (
